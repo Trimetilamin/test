@@ -24,7 +24,7 @@ non_picked_divisor_list = []
 
 
 
-cls = lambda: os.system('cls')      #képernyőtörlésekhez majd csak még nem raktam sehova hogy lásd a historyt
+cls = lambda: os.system('cls')
 
 
 def player_namer_function():
@@ -48,10 +48,11 @@ def number_chooser_function():
 
 
 def divisor_maker_function(original_number):
-    for i in range(1,(original_number+1)):
-        if original_number%i == 0:
-            divisors_list.append(i)
-        else: pass
+    for potential_divisors in range(1,(original_number+1)):
+        if original_number%potential_divisors == 0:
+            divisors_list.append(potential_divisors)
+        else:
+            pass
     print(the_divisors_message)
     print(divisors_list)
     global non_picked_divisor_list
@@ -98,12 +99,12 @@ def divisor_cutter_function(non_picked_divisor_list):
     player_round_counter = non_picked_divisor_list[-1]
     del non_picked_divisor_list[-1]
     non_picked_divisor_help_list = []
-    for i in non_picked_divisor_list:
-        if i <= number:
-            non_picked_divisor_help_list.append(i)
-    for i in non_picked_divisor_help_list:
-        if number%i==0:
-            non_picked_divisor_list.remove(i)
+    for divisors in non_picked_divisor_list:
+        if divisors <= number:
+            non_picked_divisor_help_list.append(divisors)
+    for divisors in non_picked_divisor_help_list:
+        if number%divisors==0:
+            non_picked_divisor_list.remove(divisors)
     non_picked_divisor_help_list.clear()
     print(non_picked_divisor_list)
     non_picked_divisor_list.append(player_round_counter)
