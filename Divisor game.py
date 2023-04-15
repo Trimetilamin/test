@@ -1,142 +1,137 @@
 import os
 
 
-FirstPlayer = "Az első játékos neve:"
-SecondPlayer ="A második játékos neve:"
-ChooseANumber = "1-nél nagyobb, egész számot adjon meg!"
-PickANumber = "Válassz egy számot!"
-LooserMessage = "Vesztettél!"
-DontGiveUpMessage = "Még van lehetőség mást választani!"
-GiveANumber = "Kérem számot adjon meg!"
-GiveADivisorNumber = "Ez a szám nincs az osztók között!"
-GameOverMessage = "Vége a játéknak"
-WinnerMessage = " nyert!"
+first_player = "Az első játékos neve:"
+second_player ="A második játékos neve:"
+the_divisors_message = "Ezek az osztók:"
+the_non_picked_divisors_message = "Ezek a még nem kiejtett osztók:"
+choose_a_number = "1-nél nagyobb, egész számot adjon meg!"
+pick_a_number = "Válassz egy számot!"
+looser_message = "Vesztettél!"
+dont_give_up_message = "Még van lehetőség mást választani!"
+give_a_number_messageage = "Kérem számot adjon meg!"
+give_a_divisor_number_messagesorNumber = "Ez a szám nincs az osztók között!"
+game_over_messageMessage = "Vége a játéknak"
+winner_messagessage = " nyert!"
 
 
 
 
-playerRound = 1
+player_round_counter = 1
 x = []
-divisors = []
-nonPickedDivisors = []
-PickedDivisors = []
+divisors_list = []
+non_picked_divisor_list = []
+
 
 
 cls = lambda: os.system('cls')      #képernyőtörlésekhez majd csak még nem raktam sehova hogy lásd a historyt
 
 
-def playerNamer():
-    global Player_1
-    Player_1 = input(FirstPlayer)
-    global Player_2
-    Player_2 = input(SecondPlayer)
+def player_namer_function():
+    global player_1
+    player_1 = input(first_player)
+    global player_2
+    player_2 = input(second_player)
 
 
-def numberchooser():
+def number_chooser_function():
     while True:
         try:
-            origNumber = input(ChooseANumber)
-            origNumber = int(origNumber)
-            if origNumber < 1:
+            original_number = input(choose_a_number)
+            original_number = int(original_number)
+            if original_number < 1:
                 continue
             else:
-                return origNumber
+                return original_number
         except ValueError:
             continue
 
 
-def divisorMaker(origNumber):
-    for i in range(1,(origNumber+1)):
-        if origNumber%i == 0:
-            divisors.append(i)
+def divisor_maker_function(original_number):
+    for i in range(1,(original_number+1)):
+        if original_number%i == 0:
+            divisors_list.append(i)
         else: pass
-    print("Ezek az osztók:")
-    print(divisors)
-    global nonPickedDivisors
-    nonPickedDivisors = divisors
-    print("Ezek a még nem kiejtett osztók:")
-    print(nonPickedDivisors)
-    nonPickedDivisors.append(1)                 #1. playerround jön
-    return nonPickedDivisors
+    print(the_divisors_message)
+    print(divisors_list)
+    global non_picked_divisor_list
+    non_picked_divisor_list = divisors_list
+    print(the_non_picked_divisors_message)
+    print(non_picked_divisor_list)
+    non_picked_divisor_list.append(1)
+    return non_picked_divisor_list
 
 
-def giveANumber(Player_1: str, Player_2: str, nonPickedDivisors, PickANumber:str, DontGiveUpMessage: str, GiveANumber: str):
-    playerRound = nonPickedDivisors[-1]
-    del nonPickedDivisors[-1]
+def give_a_number_function(player_1: str, player_2: str, non_picked_divisor_list, pick_a_number:str, dont_give_up_message: str, give_a_number_messageage: str):
+    player_round_counter = non_picked_divisor_list[-1]
+    del non_picked_divisor_list[-1]
     while True:
-        if playerRound%2 == 1:                                          
-            numb = input(Player_1 + " : " + PickANumber)
-        elif playerRound%2 == 0:
-            numb = input(Player_2 + " : " + PickANumber)
-
-
-
-
+        if player_round_counter%2 == 1:                                          
+            number = input(player_1 + " : " + pick_a_number)
+        elif player_round_counter%2 == 0:
+            number = input(player_2 + " : " + pick_a_number)
         try:
-            numb = int(numb)
-            if (nonPickedDivisors.count(numb) == 0):              
-                print(GiveADivisorNumber)
-                print(nonPickedDivisors)
-                continue
-                           
-            if (nonPickedDivisors.count(numb) == 1):              
-                if numb == nonPickedDivisors[-1]:
-                    print(DontGiveUpMessage)
-                    print(nonPickedDivisors)
+            number = int(number)
+            if (non_picked_divisor_list.count(number) == 0):              
+                print(give_a_divisor_number_messagesorNumber)
+                print(non_picked_divisor_list)
+                continue         
+            if (non_picked_divisor_list.count(number) == 1):              
+                if number == non_picked_divisor_list[-1]:
+                    print(dont_give_up_message)
+                    print(non_picked_divisor_list)
                     continue
                 else:
-                    playerRound = playerRound + 1
-                    nonPickedDivisors.append(playerRound)
-                    nonPickedDivisors.append(numb)
-                    print(playerRound)
-                    return nonPickedDivisors
-                               
+                    player_round_counter = player_round_counter + 1
+                    non_picked_divisor_list.append(player_round_counter)
+                    non_picked_divisor_list.append(number)
+                    print(player_round_counter)
+                    return non_picked_divisor_list                         
         except ValueError:
-            print(GiveANumber)
+            print(give_a_number_messageage)
             continue
 
 
-def divisorCutter(nonPickedDivisors):
-    numb = nonPickedDivisors[-1]
-    del nonPickedDivisors[-1]
-    playerRound = nonPickedDivisors[-1]
-    del nonPickedDivisors[-1]
-    nonPickedDivisorsHelp = []
-    for i in nonPickedDivisors:
-        if i <= numb:
-            nonPickedDivisorsHelp.append(i)
-    for i in nonPickedDivisorsHelp:
-        if numb%i==0:
-            nonPickedDivisors.remove(i)
-    nonPickedDivisorsHelp.clear()
-    print(nonPickedDivisors)
-    nonPickedDivisors.append(playerRound)
-    return nonPickedDivisors
+def divisor_cutter_function(non_picked_divisor_list):
+    number = non_picked_divisor_list[-1]
+    del non_picked_divisor_list[-1]
+    player_round_counter = non_picked_divisor_list[-1]
+    del non_picked_divisor_list[-1]
+    non_picked_divisor_help_list = []
+    for i in non_picked_divisor_list:
+        if i <= number:
+            non_picked_divisor_help_list.append(i)
+    for i in non_picked_divisor_help_list:
+        if number%i==0:
+            non_picked_divisor_list.remove(i)
+    non_picked_divisor_help_list.clear()
+    print(non_picked_divisor_list)
+    non_picked_divisor_list.append(player_round_counter)
+    return non_picked_divisor_list
    
-def theWinneris():
-    if playerRound%2 == 1:
-        print(GameOverMessage)
-        print(Player_1 + WinnerMessage)
+def the_winner_is_function():
+    if player_round_counter%2 == 0:
+        print(game_over_messageMessage)
+        print(player_1 + winner_messagessage)
     else:
-        print(GameOverMessage)
-        print(Player_2 + WinnerMessage)
+        print(game_over_messageMessage)
+        print(player_2 + winner_messagessage)
 
 
 
 
-playerNamer()
-divisorMaker(numberchooser())
+player_namer_function()
+divisor_maker_function(number_chooser_function())
 
-if len(nonPickedDivisors) > 3:
+if len(non_picked_divisor_list) > 3:
     while True:
-        giveANumber(Player_1, Player_2, nonPickedDivisors, PickANumber, DontGiveUpMessage, GiveANumber)
-        divisorCutter(nonPickedDivisors)
-        if len(nonPickedDivisors) < 3:
-            theWinneris()
+        give_a_number_function(player_1, player_2, non_picked_divisor_list, pick_a_number, dont_give_up_message, give_a_number_messageage)
+        divisor_cutter_function(non_picked_divisor_list)
+        if len(non_picked_divisor_list) < 3:
+            the_winner_is_function()
             break
 else:
-    theWinneris()
-
+    the_winner_is_function()
 
 
 
