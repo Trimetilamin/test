@@ -1,146 +1,90 @@
 import os
 
+class Messages:
+    first_player = "Az első játékos neve:"
+    second_player ="A második játékos neve:"
+    the_divisors_message = "Ezek az osztók:"
+    the_non_picked_divisors_message = "Ezek a még nem kiejtett osztók:"
+    choose_a_number = "1-nél nagyobb, egész számot adjon meg!"
+    pick_a_number = "Válassz egy számot!"
+    looser_message = "Vesztettél!"
+    dont_give_up_message = "Még van lehetőség mást választani!"
+    give_a_number_messageage = "Kérem számot adjon meg!"
+    give_a_divisor_number_messagesorNumber = "Ez a szám nincs az osztók között!"
+    game_over_messageMessage = "Vége a játéknak"
+    winner_messagessage = " nyert!"
 
-first_player = "Az első játékos neve:"
-second_player ="A második játékos neve:"
-the_divisors_message = "Ezek az osztók:"
-the_non_picked_divisors_message = "Ezek a még nem kiejtett osztók:"
-choose_a_number = "1-nél nagyobb, egész számot adjon meg!"
-pick_a_number = "Válassz egy számot!"
-looser_message = "Vesztettél!"
-dont_give_up_message = "Még van lehetőség mást választani!"
-give_a_number_messageage = "Kérem számot adjon meg!"
-give_a_divisor_number_messagesorNumber = "Ez a szám nincs az osztók között!"
-game_over_messageMessage = "Vége a játéknak"
-winner_messagessage = " nyert!"
+class Props:
+    original_number = int
+    player_round_counter = 0
+    x = []
+    divisors_list = []
+    non_picked_divisor_list = []
 
+class Players:
 
+    player_1 = input(Messages.first_player)
+    player_2 = input(Messages.second_player)
+    pass
 
-
-player_round_counter = 1
-x = []
-divisors_list = []
-non_picked_divisor_list = []
-
-
-
-cls = lambda: os.system('cls')
+#cls = lambda: os.system('cls')
 
 
 def player_namer_function():
-    global player_1
-    player_1 = input(first_player)
-    global player_2
-    player_2 = input(second_player)
+    Players
 
 
 def number_chooser_function():
     while True:
         try:
-            original_number = input(choose_a_number)
-            original_number = int(original_number)
+            ask_number = input(Messages.choose_a_number)
+            original_number = int(ask_number)
             if original_number < 1:
                 continue
             else:
-                return original_number
+                original_number = Props.original_number
         except ValueError:
             continue
 
 
-def divisor_maker_function(original_number):
-    for potential_divisors in range(1,(original_number+1)):
-        if original_number%potential_divisors == 0:
-            divisors_list.append(potential_divisors)
+def divisor_maker_function():
+    for potential_divisors in range(1,(Props.original_number+1)):
+        if Props.original_number%potential_divisors == 0:
+            Props.divisors_list.append(potential_divisors)
         else:
             pass
-    print(the_divisors_message)
-    print(divisors_list)
-    global non_picked_divisor_list
-    non_picked_divisor_list = divisors_list
-    print(the_non_picked_divisors_message)
-    print(non_picked_divisor_list)
-    non_picked_divisor_list.append(1)
-    return non_picked_divisor_list
+    print(Messages.the_divisors_message)
+    print(Props.divisors_list)
+    Props.non_picked_divisor_list = Props.divisors_list
+    print(Messages.the_non_picked_divisors_message)
+    print(Props.non_picked_divisor_list)
 
 
-def give_a_number_function(player_1: str, player_2: str, non_picked_divisor_list, pick_a_number:str, dont_give_up_message: str, give_a_number_messageage: str):
-    player_round_counter = non_picked_divisor_list[-1]
-    del non_picked_divisor_list[-1]
+def give_a_number_function():
+    Props.player_round_counter = Props.player_round_counter + 1
     while True:
-        if player_round_counter%2 == 1:                                          
-            number = input(player_1 + " : " + pick_a_number)
-        elif player_round_counter%2 == 0:
-            number = input(player_2 + " : " + pick_a_number)
+        if Props.player_round_counter%2 == 1:                                          
+            number = input(Players.player_1 + " : " + Messages.pick_a_number)
+        elif Props.player_round_counter%2 == 0:
+            number = input(Players.player_2 + " : " + Messages.pick_a_number)
         try:
             number = int(number)
-            if (non_picked_divisor_list.count(number) == 0):              
-                print(give_a_divisor_number_messagesorNumber)
-                print(non_picked_divisor_list)
+            if (Props.non_picked_divisor_list.count(number) == 0):              
+                print(Messages.give_a_divisor_number_messagesorNumber)
+                print(Props.non_picked_divisor_list)
                 continue         
-            if (non_picked_divisor_list.count(number) == 1):              
-                if number == non_picked_divisor_list[-1]:
-                    print(dont_give_up_message)
-                    print(non_picked_divisor_list)
+            if (Props.non_picked_divisor_list.count(number) == 1):              
+                if number == Props.non_picked_divisor_list[-1]:
+                    print(Messages.dont_give_up_message)
+                    print(Props.non_picked_divisor_list)
                     continue
                 else:
-                    player_round_counter = player_round_counter + 1
-                    non_picked_divisor_list.append(player_round_counter)
-                    non_picked_divisor_list.append(number)
-                    print(player_round_counter)
-                    return non_picked_divisor_list                         
+                    Props.player_round_counter = Props.player_round_counter + 1
+                    print(Props.player_round_counter)
+                    return Props.non_picked_divisor_list                         
         except ValueError:
-            print(give_a_number_messageage)
+            print(Messages.give_a_number_messageage)
             continue
-
-
-def divisor_cutter_function(non_picked_divisor_list):
-    number = non_picked_divisor_list[-1]
-    del non_picked_divisor_list[-1]
-    player_round_counter = non_picked_divisor_list[-1]
-    del non_picked_divisor_list[-1]
-    non_picked_divisor_help_list = []
-    for divisors in non_picked_divisor_list:
-        if divisors <= number:
-            non_picked_divisor_help_list.append(divisors)
-    for divisors in non_picked_divisor_help_list:
-        if number%divisors==0:
-            non_picked_divisor_list.remove(divisors)
-    non_picked_divisor_help_list.clear()
-    print(non_picked_divisor_list)
-    non_picked_divisor_list.append(player_round_counter)
-    return non_picked_divisor_list
-   
-def the_winner_is_function():
-    if player_round_counter%2 == 0:
-        print(game_over_messageMessage)
-        print(player_1 + winner_messagessage)
-    else:
-        print(game_over_messageMessage)
-        print(player_2 + winner_messagessage)
-
-
-
 
 player_namer_function()
 divisor_maker_function(number_chooser_function())
-
-if len(non_picked_divisor_list) > 3:
-    while True:
-        give_a_number_function(player_1, player_2, non_picked_divisor_list, pick_a_number, dont_give_up_message, give_a_number_messageage)
-        divisor_cutter_function(non_picked_divisor_list)
-        if len(non_picked_divisor_list) < 3:
-            the_winner_is_function()
-            break
-else:
-    the_winner_is_function()
-
-
-
-
-
-
-
-
-
-
-
